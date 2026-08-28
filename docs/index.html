@@ -17,6 +17,8 @@
     --text-1: #a3a3ad;
     --text-2: #6f6f7a;
     --border: #34343c;
+    --gold: #e8c25e;
+    --gold-2: #f3d78a;
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
@@ -58,6 +60,20 @@
     font-weight: 600;
   }
   .navlinks .cta:hover { background: var(--accent-2); }
+  .pro-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    border: 1px solid rgba(232,194,94,0.5);
+    color: var(--gold);
+    background: rgba(232,194,94,0.08);
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 12.5px;
+  }
+  .pro-pill:hover { background: rgba(232,194,94,0.16); }
 
   /* ---------- Hero ---------- */
   .hero {
@@ -245,6 +261,146 @@
   details.faq-item[open] summary .chev { transform: rotate(45deg); color: var(--accent-2); }
   details.faq-item p { color: var(--text-1); font-size: 13.5px; line-height: 1.65; margin: 12px 0 0; }
 
+  /* Offres : Gratuit vs Pro, deux colonnes */
+  #offres { padding: 20px 0 76px; }
+  #offres h2 .gold { color: var(--gold); }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+    align-items: stretch;
+  }
+  .price-card {
+    border-radius: 18px;
+    padding: 1px;
+    background: var(--border);
+  }
+  .price-card.pro {
+    background: linear-gradient(135deg, rgba(232,194,94,0.55), rgba(232,194,94,0.05) 40%, rgba(232,194,94,0.35));
+  }
+  .price-card-inner {
+    height: 100%;
+    background: var(--bg-1);
+    border-radius: 17px;
+    padding: 32px 30px;
+    display: flex;
+    flex-direction: column;
+  }
+  .price-badge {
+    display: inline-block;
+    align-self: flex-start;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-0);
+    background: var(--bg-3);
+    padding: 4px 10px;
+    border-radius: 999px;
+    margin-bottom: 16px;
+  }
+  .price-badge.gold { color: #2a2210; background: var(--gold); }
+  .price-amount { font-size: 21px; font-weight: 700; margin-bottom: 20px; }
+  .price-card.pro .price-amount { color: var(--gold); }
+  .price-features { list-style: none; margin: 0 0 28px; padding: 0; flex: 1; }
+  .price-features li {
+    position: relative;
+    padding-left: 24px;
+    font-size: 14px;
+    color: var(--text-1);
+    line-height: 1.75;
+  }
+  .price-features li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--accent-2);
+    font-weight: 700;
+  }
+  .price-card.pro .price-features li::before { color: var(--gold); }
+  .price-features li.included-note {
+    color: var(--text-0);
+    font-weight: 600;
+    padding-left: 0;
+    margin-bottom: 2px;
+  }
+  .price-features li.included-note::before { content: none; }
+  .price-cta { display: flex; flex-direction: column; gap: 10px; }
+  .price-cta .btn { justify-content: center; width: 100%; }
+  .price-cta .btn.gold-btn { border: none; cursor: pointer; font: inherit; }
+  .btn.gold-btn { background: var(--gold); border-color: var(--gold); color: #2a2210; }
+  .btn.gold-btn:hover { background: var(--gold-2); border-color: var(--gold-2); }
+
+  /* Popup de paiement (Pro) */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10,10,12,0.72);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
+    padding: 20px;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: auto; }
+  .modal-box {
+    position: relative;
+    background: var(--bg-1);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 30px 80px -20px rgba(0,0,0,0.7);
+    transform: translateY(10px);
+    transition: transform 0.15s ease;
+  }
+  .modal-overlay.open .modal-box { transform: translateY(0); }
+  .modal-box h3 { margin: 0 0 8px; font-size: 19px; }
+  .modal-lead { color: var(--text-1); font-size: 13.5px; margin: 0 0 22px; }
+  .modal-close {
+    position: absolute;
+    top: 14px; right: 14px;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--bg-2);
+    color: var(--text-1);
+    cursor: pointer;
+    font-size: 13px;
+  }
+  .modal-close:hover { color: var(--text-0); background: var(--bg-3); }
+  .pay-option {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    text-decoration: none;
+    color: var(--text-0);
+    margin-bottom: 12px;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .pay-option:last-child { margin-bottom: 0; }
+  .pay-option:hover { border-color: var(--accent); background: var(--bg-2); }
+  .pay-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    background: var(--bg-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .pay-title { display: block; font-weight: 600; font-size: 14px; }
+  .pay-sub { display: block; font-size: 12px; color: var(--text-1); margin-top: 1px; }
+
   /* Footer */
   footer { padding: 40px 0 60px; border-top: 1px solid var(--border); }
   footer .wrap { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
@@ -259,6 +415,9 @@
     h1 { font-size: 34px; }
     .steps { grid-template-columns: 1fr; }
     .navlinks a:not(.cta) { display: none; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .price-card-inner { padding: 26px 22px; }
+    .modal-box { padding: 26px 22px; }
   }
 </style>
 </head>
@@ -271,6 +430,7 @@
         <a href="#fonctionnalites">Fonctionnalités</a>
         <a href="#comment-ca-marche">Comment ça marche</a>
         <a href="#faq">FAQ</a>
+        <a class="pro-pill" href="#offres">✨ MediaDrop Pro</a>
         <a class="cta" href="#telecharger">Télécharger</a>
       </div>
     </div>
@@ -347,6 +507,75 @@
       </div>
     </div>
   </section>
+
+  <section id="offres">
+    <div class="wrap">
+      <p class="eyebrow">Choisis ta formule</p>
+      <h2>Gratuit ou <span class="gold">Pro</span></h2>
+      <p class="section-lead">MediaDrop Pro inclut tout le gratuit, plus des outils pensés pour les monteurs qui gèrent de grosses bibliothèques de médias.</p>
+
+      <div class="pricing-grid">
+        <div class="price-card">
+          <div class="price-card-inner">
+            <span class="price-badge">Gratuit</span>
+            <div class="price-amount">0 €</div>
+            <ul class="price-features">
+              <li>Bibliothèque de dossiers illimitée</li>
+              <li>Préécoute audio avec forme d'onde</li>
+              <li>Aperçu vidéo avec vignette</li>
+              <li>Glisser-déposer natif</li>
+              <li>Volume et raccourci Espace</li>
+            </ul>
+            <div class="price-cta">
+              <a class="btn primary" href="https://github.com/Fulberitodesign/mediadrop/releases/latest/download/MediaDrop-Setup.exe">Télécharger pour Windows</a>
+              <a class="btn" href="https://github.com/Fulberitodesign/mediadrop/releases/latest/download/MediaDrop-Setup.dmg">Télécharger pour Mac</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="price-card pro">
+          <div class="price-card-inner">
+            <span class="price-badge gold">✨ Pro</span>
+            <div class="price-amount">Achat unique</div>
+            <ul class="price-features">
+              <li class="included-note">Tout le gratuit, plus :</li>
+              <li>Recherche instantanée dans toute la bibliothèque</li>
+              <li>Favoris et fichiers récents</li>
+              <li>Étiquettes de couleur, comme dans Premiere</li>
+              <li>Aperçu vidéo au survol (mini scrubbing)</li>
+              <li>Boucle audio et thème clair/sombre</li>
+              <li>Raccourcis clavier personnalisables</li>
+            </ul>
+            <div class="price-cta">
+              <button class="btn gold-btn" type="button" id="openProModalBtn">Obtenir MediaDrop Pro →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="modal-overlay" id="proModal">
+    <div class="modal-box">
+      <button class="modal-close" id="closeProModalBtn" aria-label="Fermer">✕</button>
+      <h3>Obtenir MediaDrop Pro</h3>
+      <p class="modal-lead">Choisis ton moyen de paiement :</p>
+      <a class="pay-option" href="LIEN_GUMROAD_A_REMPLACER" target="_blank" rel="noopener">
+        <span class="pay-icon">💳</span>
+        <span>
+          <span class="pay-title">Carte bancaire / PayPal</span>
+          <span class="pay-sub">Paiement sécurisé via Gumroad</span>
+        </span>
+      </a>
+      <a class="pay-option" href="LIEN_MOBILE_MONEY_A_REMPLACER" target="_blank" rel="noopener">
+        <span class="pay-icon">📱</span>
+        <span>
+          <span class="pay-title">Mobile Money</span>
+          <span class="pay-sub">Orange Money, MTN, Wave...</span>
+        </span>
+      </a>
+    </div>
+  </div>
 
   <section class="alt" id="comment-ca-marche">
     <div class="wrap">
@@ -441,5 +670,24 @@
     </div>
   </footer>
 
+  <script>
+    (function () {
+      var modal = document.getElementById('proModal');
+      var openBtn = document.getElementById('openProModalBtn');
+      var closeBtn = document.getElementById('closeProModalBtn');
+
+      function openModal() { modal.classList.add('open'); }
+      function closeModal() { modal.classList.remove('open'); }
+
+      openBtn.addEventListener('click', openModal);
+      closeBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', function (e) {
+        if (e.target === modal) closeModal();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+      });
+    })();
+  </script>
 </body>
 </html>
