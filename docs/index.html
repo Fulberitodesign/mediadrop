@@ -148,6 +148,30 @@
   .btn.primary .sub { color: rgba(255,255,255,0.8); }
   .free-note { font-size: 12.5px; color: var(--text-2); }
 
+  /* Video de presentation */
+  #video { padding: 8px 0 64px; }
+  #video .wrap { text-align: center; }
+  #video .section-lead { margin-left: auto; margin-right: auto; }
+  .video-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    aspect-ratio: 16 / 9;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--bg-1);
+    box-shadow: 0 30px 70px -20px rgba(0,0,0,0.6);
+  }
+  .video-wrap iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
   .hero-shot {
     position: relative;
     display: flex;
@@ -337,79 +361,8 @@
   .price-features li.included-note::before { content: none; }
   .price-cta { display: flex; flex-direction: column; gap: 10px; }
   .price-cta .btn { justify-content: center; width: 100%; }
-  .price-cta .btn.gold-btn { border: none; cursor: pointer; font: inherit; }
   .btn.gold-btn { background: var(--gold); border-color: var(--gold); color: #2a2210; }
   .btn.gold-btn:hover { background: var(--gold-2); border-color: var(--gold-2); }
-
-  /* Popup de paiement (Pro) */
-  .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(10,10,12,0.72);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.15s ease;
-    padding: 20px;
-  }
-  .modal-overlay.open { opacity: 1; pointer-events: auto; }
-  .modal-box {
-    position: relative;
-    background: var(--bg-1);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 32px;
-    max-width: 400px;
-    width: 100%;
-    box-shadow: 0 30px 80px -20px rgba(0,0,0,0.7);
-    transform: translateY(10px);
-    transition: transform 0.15s ease;
-  }
-  .modal-overlay.open .modal-box { transform: translateY(0); }
-  .modal-box h3 { margin: 0 0 8px; font-size: 19px; }
-  .modal-lead { color: var(--text-1); font-size: 13.5px; margin: 0 0 22px; }
-  .modal-close {
-    position: absolute;
-    top: 14px; right: 14px;
-    width: 30px; height: 30px;
-    border-radius: 50%;
-    border: 1px solid var(--border);
-    background: var(--bg-2);
-    color: var(--text-1);
-    cursor: pointer;
-    font-size: 13px;
-  }
-  .modal-close:hover { color: var(--text-0); background: var(--bg-3); }
-  .pay-option {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 14px 16px;
-    border: 1px solid var(--border);
-    border-radius: 11px;
-    text-decoration: none;
-    color: var(--text-0);
-    margin-bottom: 12px;
-    transition: border-color 0.15s ease, background 0.15s ease;
-  }
-  .pay-option:last-child { margin-bottom: 0; }
-  .pay-option:hover { border-color: var(--accent); background: var(--bg-2); }
-  .pay-icon {
-    font-size: 20px;
-    flex-shrink: 0;
-    width: 34px;
-    height: 34px;
-    border-radius: 9px;
-    background: var(--bg-2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .pay-title { display: block; font-weight: 600; font-size: 14px; }
-  .pay-sub { display: block; font-size: 12px; color: var(--text-1); margin-top: 1px; }
 
   /* Footer */
   footer { padding: 40px 0 60px; border-top: 1px solid var(--border); }
@@ -427,7 +380,6 @@
     .navlinks a:not(.cta) { display: none; }
     .pricing-grid { grid-template-columns: 1fr; }
     .price-card-inner { padding: 26px 22px; }
-    .modal-box { padding: 26px 22px; }
   }
 </style>
 </head>
@@ -479,6 +431,22 @@
       </div>
     </div>
   </header>
+
+  <section id="video">
+    <div class="wrap">
+      <p class="eyebrow">Vidéo de présentation</p>
+      <h2>Découvre MediaDrop en vidéo</h2>
+      <p class="section-lead">Un tour complet de l'application, de l'installation au glisser-déposer dans ton logiciel de montage.</p>
+      <div class="video-wrap">
+        <iframe
+          src="https://www.youtube.com/embed/tWFzNilmPs8"
+          title="Présentation de MediaDrop"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+          loading="lazy"></iframe>
+      </div>
+    </div>
+  </section>
 
   <section id="fonctionnalites">
     <div class="wrap">
@@ -558,35 +526,13 @@
               <li>Raccourcis clavier personnalisables</li>
             </ul>
             <div class="price-cta">
-              <button class="btn gold-btn" type="button" id="openProModalBtn">Obtenir MediaDrop Pro →</button>
+              <a class="btn gold-btn" href="https://jhitqgjk.mychariow.shop/prd_94hoxlaz" target="_blank" rel="noopener">Obtenir MediaDrop Pro →</a>
             </div>
           </div>
         </div>
       </div>
     </div>
   </section>
-
-  <div class="modal-overlay" id="proModal">
-    <div class="modal-box">
-      <button class="modal-close" id="closeProModalBtn" aria-label="Fermer">✕</button>
-      <h3>Obtenir MediaDrop Pro</h3>
-      <p class="modal-lead">Choisis ton moyen de paiement :</p>
-      <a class="pay-option" href="https://fulberito.gumroad.com/l/vtrac" target="_blank" rel="noopener">
-        <span class="pay-icon">💳</span>
-        <span>
-          <span class="pay-title">Carte bancaire / PayPal</span>
-          <span class="pay-sub">Paiement sécurisé via Gumroad</span>
-        </span>
-      </a>
-      <a class="pay-option" href="https://sellyz.app/checkout/mediadrop-pro" target="_blank" rel="noopener">
-        <span class="pay-icon">📱</span>
-        <span>
-          <span class="pay-title">Mobile Money</span>
-          <span class="pay-sub">Orange Money, MTN, Wave...</span>
-        </span>
-      </a>
-    </div>
-  </div>
 
   <section class="alt" id="comment-ca-marche">
     <div class="wrap">
@@ -680,25 +626,5 @@
       <div>par <a href="https://github.com/Fulberitodesign">Fulbert Adeniyi</a></div>
     </div>
   </footer>
-
-  <script>
-    (function () {
-      var modal = document.getElementById('proModal');
-      var openBtn = document.getElementById('openProModalBtn');
-      var closeBtn = document.getElementById('closeProModalBtn');
-
-      function openModal() { modal.classList.add('open'); }
-      function closeModal() { modal.classList.remove('open'); }
-
-      openBtn.addEventListener('click', openModal);
-      closeBtn.addEventListener('click', closeModal);
-      modal.addEventListener('click', function (e) {
-        if (e.target === modal) closeModal();
-      });
-      document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
-      });
-    })();
-  </script>
 </body>
 </html>
