@@ -1,0 +1,43 @@
+{
+  "name": "mediadrop",
+  "version": "1.0.0",
+  "description": "Panneau flottant pour parcourir vos dossiers et glisser-deposer des fichiers dans n'importe quel logiciel (Premiere Pro, After Effects, etc.)",
+  "main": "main.js",
+  "author": "Fulberitodesign",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder",
+    "dist:win": "electron-builder --win",
+    "dist:mac": "electron-builder --mac"
+  },
+  "devDependencies": {
+    "electron": "^31.3.1",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.fulberitodesign.mediadrop",
+    "productName": "MediaDrop",
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer.js",
+      "index.html",
+      "style.css",
+      "assets/**/*"
+    ],
+    "mac": {
+      "target": [{ "target": "dmg", "arch": ["universal"] }],
+      "category": "public.app-category.video",
+      "artifactName": "MediaDrop-Setup.${ext}"
+    },
+    "win": {
+      "target": ["nsis"],
+      "artifactName": "MediaDrop-Setup.${ext}"
+    },
+    "directories": {
+      "output": "dist"
+    }
+  }
+}
