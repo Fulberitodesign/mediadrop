@@ -371,6 +371,90 @@
   footer a { color: var(--text-1); text-decoration: none; }
   footer a:hover { color: var(--text-0); }
 
+  /* Download counter (version gratuite uniquement) */
+  .dl-counter {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    font-size: 12.5px;
+    color: var(--text-2);
+  }
+  .dl-counter svg { color: var(--accent-2); flex-shrink: 0; }
+  .dl-counter strong { color: var(--text-0); font-weight: 700; }
+
+  /* ---------- Avis / Reviews ---------- */
+  .reviews-summary {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 36px;
+    padding: 20px 24px;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    flex-wrap: wrap;
+  }
+  .reviews-summary .score { font-size: 34px; font-weight: 700; line-height: 1; }
+  .reviews-summary .stars-static { color: #f2b544; font-size: 18px; letter-spacing: 2px; margin: 4px 0; }
+  .reviews-summary .count { color: var(--text-1); font-size: 13px; }
+
+  .review-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  .review-card {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+  }
+  .review-card .stars { color: #f2b544; font-size: 14px; letter-spacing: 1px; margin-bottom: 8px; }
+  .review-card .rname { font-weight: 600; font-size: 13.5px; margin-bottom: 4px; }
+  .review-card .rdate { color: var(--text-2); font-size: 11.5px; margin-bottom: 10px; }
+  .review-card .rcomment { color: var(--text-1); font-size: 13.5px; line-height: 1.6; white-space: pre-line; }
+  .reviews-empty, .reviews-loading, .reviews-error {
+    color: var(--text-2);
+    font-size: 13.5px;
+    padding: 16px 0;
+  }
+
+  .review-form {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 26px 28px;
+    max-width: 560px;
+  }
+  .review-form h3 { margin: 0 0 18px; font-size: 16px; }
+  .review-form label { display: block; font-size: 12.5px; color: var(--text-1); margin-bottom: 6px; font-weight: 600; }
+  .review-form .field { margin-bottom: 16px; }
+  .review-form input[type="text"], .review-form textarea {
+    width: 100%;
+    background: var(--bg-1);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: var(--text-0);
+    font-family: inherit;
+    font-size: 13.5px;
+    resize: vertical;
+  }
+  .review-form input[type="text"]:focus, .review-form textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  .star-picker { display: inline-flex; gap: 4px; font-size: 26px; cursor: pointer; }
+  .star-picker span { color: var(--border); transition: color 0.1s ease; }
+  .star-picker span.active, .star-picker span:hover, .star-picker span:hover ~ span { color: #f2b544; }
+  .star-picker { direction: rtl; flex-direction: row-reverse; justify-content: flex-end; }
+  .review-form .honeypot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .review-form .submit-msg { font-size: 12.5px; margin-top: 12px; display: none; }
+  .review-form .submit-msg.ok { color: #6fcf97; display: block; }
+  .review-form .submit-msg.err { color: #eb5757; display: block; }
+
   @media (max-width: 860px) {
     .hero .wrap { grid-template-columns: 1fr; }
     .hero-shot { order: -1; margin-bottom: 8px; }
@@ -391,6 +475,7 @@
       <div class="navlinks">
         <a href="#fonctionnalites">Fonctionnalités</a>
         <a href="#comment-ca-marche">Comment ça marche</a>
+        <a href="#avis">Avis</a>
         <a href="#faq">FAQ</a>
         <a class="pro-pill" href="#offres">✨ MediaDrop Pro</a>
         <a class="cta" href="#telecharger">Télécharger</a>
@@ -420,6 +505,7 @@
           </a>
         </div>
         <div class="free-note">Windows &amp; macOS (Intel + Apple Silicon) · sans compte, sans pub, code source public</div>
+        <div class="dl-counter" id="dlCounter" aria-live="polite"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg> <span id="dlCounterText">Chargement du nombre de téléchargements…</span></div>
       </div>
 
       <div class="hero-shot">
@@ -534,6 +620,60 @@
     </div>
   </section>
 
+  <section id="avis">
+    <div class="wrap">
+      <p class="eyebrow">Avis</p>
+      <h2>Ce que les utilisateurs en pensent</h2>
+      <p class="section-lead">Les avis sont publiés automatiquement, directement par les utilisateurs de MediaDrop.</p>
+
+      <div class="reviews-summary">
+        <div>
+          <div class="score" id="avgScore">—</div>
+          <div class="stars-static" id="avgStars">☆☆☆☆☆</div>
+          <div class="count" id="reviewCount">Aucun avis pour le moment</div>
+        </div>
+      </div>
+
+      <div class="review-grid" id="reviewGrid">
+        <div class="reviews-loading">Chargement des avis…</div>
+      </div>
+
+      <form class="review-form" id="reviewForm">
+        <h3>Laisser un avis</h3>
+
+        <div class="field">
+          <label for="rName">Nom</label>
+          <input type="text" id="rName" maxlength="60" placeholder="Ton prénom ou pseudo" required />
+        </div>
+
+        <div class="field">
+          <label>Note</label>
+          <div class="star-picker" id="starPicker" role="radiogroup" aria-label="Note sur 5">
+            <span data-value="5">★</span>
+            <span data-value="4">★</span>
+            <span data-value="3">★</span>
+            <span data-value="2">★</span>
+            <span data-value="1">★</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="rComment">Commentaire</label>
+          <textarea id="rComment" rows="4" maxlength="500" placeholder="Qu'est-ce que tu en penses ?" required></textarea>
+        </div>
+
+        <!-- Piège à robots, laissé vide par les vrais utilisateurs -->
+        <div class="honeypot" aria-hidden="true">
+          <label for="rWebsite">Site web</label>
+          <input type="text" id="rWebsite" name="rWebsite" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <button type="submit" class="btn primary" id="reviewSubmitBtn">Publier mon avis</button>
+        <div class="submit-msg" id="reviewMsg"></div>
+      </form>
+    </div>
+  </section>
+
   <section class="alt" id="comment-ca-marche">
     <div class="wrap">
       <p class="eyebrow">En 3 étapes</p>
@@ -626,5 +766,151 @@
       <div>par <a href="https://github.com/Fulberitodesign">Fulbert Adeniyi</a></div>
     </div>
   </footer>
+
+  <!-- ====== Avis (Supabase) + Compteur de téléchargements gratuits (GitHub API) ====== -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // ---------------------------------------------------------------
+    // 1) CONFIGURATION — mêmes identifiants Supabase que sur le projet Pro
+    // ---------------------------------------------------------------
+    const SUPABASE_URL = "https://dsmycygldvsicuznwnjq.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_lMzIdMZJxiKgpj9PB2dkfQ_YNwljevd";
+    const GITHUB_REPO = "Fulberitodesign/mediadrop"; // compteur = téléchargements de la version gratuite uniquement
+
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // ---------------------------------------------------------------
+    // 2) AVIS
+    // ---------------------------------------------------------------
+    const reviewGrid = document.getElementById("reviewGrid");
+    const avgScoreEl = document.getElementById("avgScore");
+    const avgStarsEl = document.getElementById("avgStars");
+    const reviewCountEl = document.getElementById("reviewCount");
+    const reviewForm = document.getElementById("reviewForm");
+    const reviewMsg = document.getElementById("reviewMsg");
+    const submitBtn = document.getElementById("reviewSubmitBtn");
+    const starPicker = document.getElementById("starPicker");
+    let selectedRating = 0;
+
+    function starsString(n) {
+      const rounded = Math.round(n);
+      return "★★★★★☆☆☆☆☆".slice(5 - rounded, 10 - rounded);
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement("div");
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function renderReviews(reviews) {
+      if (!reviews || reviews.length === 0) {
+        reviewGrid.innerHTML = '<div class="reviews-empty">Aucun avis pour le moment — sois le premier à en laisser un !</div>';
+        reviewCountEl.textContent = "Aucun avis pour le moment";
+        avgScoreEl.textContent = "—";
+        avgStarsEl.textContent = "☆☆☆☆☆";
+        return;
+      }
+      const avg = reviews.reduce((s, r) => s + r.rating, 0) / reviews.length;
+      avgScoreEl.textContent = avg.toFixed(1);
+      avgStarsEl.textContent = starsString(avg);
+      reviewCountEl.textContent = reviews.length + " avis";
+
+      reviewGrid.innerHTML = reviews.map(r => `
+        <div class="review-card">
+          <div class="stars">${starsString(r.rating)}</div>
+          <div class="rname">${escapeHtml(r.name)}</div>
+          <div class="rdate">${new Date(r.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
+          <div class="rcomment">${escapeHtml(r.comment)}</div>
+        </div>
+      `).join("");
+    }
+
+    async function loadReviews() {
+      const { data, error } = await supabaseClient
+        .from("reviews")
+        .select("name, rating, comment, created_at")
+        .order("created_at", { ascending: false })
+        .limit(50);
+
+      if (error) {
+        reviewGrid.innerHTML = '<div class="reviews-error">Impossible de charger les avis pour le moment.</div>';
+        return;
+      }
+      renderReviews(data);
+    }
+
+    starPicker.addEventListener("click", (e) => {
+      const target = e.target.closest("span[data-value]");
+      if (!target) return;
+      selectedRating = parseInt(target.dataset.value, 10);
+      [...starPicker.children].forEach(s => {
+        s.classList.toggle("active", parseInt(s.dataset.value, 10) <= selectedRating);
+      });
+    });
+
+    reviewForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      reviewMsg.className = "submit-msg";
+      reviewMsg.textContent = "";
+
+      const name = document.getElementById("rName").value.trim();
+      const comment = document.getElementById("rComment").value.trim();
+      const honeypot = document.getElementById("rWebsite").value.trim();
+
+      if (honeypot) return; // bot détecté, on ignore silencieusement
+
+      if (!name || !comment || selectedRating < 1) {
+        reviewMsg.className = "submit-msg err";
+        reviewMsg.textContent = "Merci de remplir ton nom, un commentaire et une note.";
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Publication…";
+
+      const { error } = await supabaseClient.from("reviews").insert({
+        name: name.slice(0, 60),
+        rating: selectedRating,
+        comment: comment.slice(0, 500)
+      });
+
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Publier mon avis";
+
+      if (error) {
+        reviewMsg.className = "submit-msg err";
+        reviewMsg.textContent = "Une erreur est survenue, réessaie dans un instant.";
+        return;
+      }
+
+      reviewMsg.className = "submit-msg ok";
+      reviewMsg.textContent = "Merci pour ton avis !";
+      reviewForm.reset();
+      selectedRating = 0;
+      [...starPicker.children].forEach(s => s.classList.remove("active"));
+      loadReviews();
+    });
+
+    loadReviews();
+
+    // ---------------------------------------------------------------
+    // 3) COMPTEUR DE TÉLÉCHARGEMENTS (API GitHub Releases, version gratuite)
+    // ---------------------------------------------------------------
+    async function loadDownloadCount() {
+      const el = document.getElementById("dlCounterText");
+      try {
+        const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/releases/latest`);
+        if (!res.ok) throw new Error("API GitHub indisponible");
+        const data = await res.json();
+        const total = (data.assets || []).reduce((sum, a) => sum + (a.download_count || 0), 0);
+        el.innerHTML = `<strong>${total.toLocaleString('fr-FR')}</strong> téléchargement${total > 1 ? "s" : ""} au total`;
+      } catch (err) {
+        document.getElementById("dlCounter").style.display = "none";
+      }
+    }
+    loadDownloadCount();
+  </script>
+
 </body>
 </html>
